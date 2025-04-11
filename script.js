@@ -1,8 +1,3 @@
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const sequenceElement = document.getElementById('sequence');
     const prevButton = document.getElementById('prev');
@@ -22,33 +17,59 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollInterval = null;
     const scrollSpeed = 150; // Milliseconds between movements (lower = faster)
     
-    // Calculate Fibonacci number using recursion with memoization
+    // Unified color management function
+    function getColorScheme(position) {
+        if (position >= 0) {
+            const blueIntensity = Math.min(Math.abs(position) * 5, 200);
+            return {
+                background: `rgb(0, ${blueIntensity}, ${blueIntensity + 55})`,
+                text: '#ffffff',
+                buttonBg: 'rgba(0, 100, 212, 0.8)'
+            };
+        }
+        
+        const currentValue = fibonacci(position);
+        const hue = (currentValue % 360);
+        const textHue = (hue + 180) % 360;
+        
+        return {
+            background: `hsl(${hue}, 70%, 80%)`,
+            text: `hsl(${textHue}, 70%, 20%)`,
+            buttonBg: `hsla(${textHue}, 70%, 40%, 0.8)`
+        };
+    }
+    
+    // Simplified color update function
+    function updateColors() {
+        const colors = getColorScheme(currentPosition);
+        document.body.style.backgroundColor = colors.background;
+        document.body.style.color = colors.text;
+        document.querySelectorAll('.number').forEach(el => {
+            el.style.color = colors.text;
+        });
+        document.querySelectorAll('button').forEach(btn => {
+            btn.style.backgroundColor = colors.buttonBg;
+        });
+    }
+    
+    // Improved fibonacci calculation
     function fibonacci(n) {
-        // Use cache for both positive and negative indices
         if (fibCache[n] !== undefined) return fibCache[n];
         
         if (n === 0) return 0;
         if (n === 1) return 1;
         
-        let result;
-        if (n > 1) {
-            // Standard Fibonacci calculation for positive indices
-            result = fibonacci(n - 1) + fibonacci(n - 2);
-        } else if (n < 0) {
-            // For negative indices: F(-n) = (-1)^n * F(|n|)
-            // This is the correct formula that follows the pattern:
-            // F(-1)=1, F(-2)=-1, F(-3)=2, F(-4)=-3, F(-5)=5, etc.
-            const positiveN = Math.abs(n);
-            result = Math.pow(-1, positiveN + 1) * fibonacci(positiveN);
-        }
+        const positiveN = Math.abs(n);
+        const result = n > 0 
+            ? fibonacci(n - 1) + fibonacci(n - 2)
+            : Math.pow(-1, positiveN + 1) * fibonacci(positiveN);
         
-        // Cache the result
         fibCache[n] = result;
         return result;
     }
     
-    // Pre-compute some Fibonacci numbers
-    for (let i = -20; i <= 50; i++) {
+    // Pre-compute more Fibonacci numbers for better performance
+    for (let i = -50; i <= 100; i++) {
         fibonacci(i);
     }
     
@@ -95,40 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
             sequenceElement.appendChild(numberElement);
             
             // Insert operators between specific terms
-           /* if (i === 0) {
-                // Add "+" between center and next term
-                const plusElement = document.createElement('div');
-                plusElement.className = 'number operator';
-                //plusElement.textContent = '+';
-				plusElement.insertAdjacentHTML('beforeend', '<span class="vertical-equal">=</span>');
-                sequenceElement.appendChild(plusElement);
-            } 
-			*/
-			/*else if (i === 1) {
-                // Add "=" between next term and the one after
-                const equalsElement = document.createElement('div');
-                equalsElement.className = 'number operator';
-                //  equalsElement.textContent = '<span class="vertical-equal">=</span>';
-                equalsElement.insertAdjacentHTML('beforeend', '<span class="vertical-equal">=</span>');
-				sequenceElement.appendChild(equalsElement);
-            } */
-			
-            // else 
-				if (i === -1) {
-                 // Add "-" between center and previous term
-                 const minusElement = document.createElement('div');
-                 minusElement.className = 'number operator';
-					minusElement.insertAdjacentHTML('beforeend', '<span class="vertical-equal">=</span>');
-					sequenceElement.appendChild(minusElement);
-				} else 
-				if (i === -2) {
-                 // Add "=" between previous term and the one before
-                 const equalsElement = document.createElement('div');
-                 equalsElement.className = 'number operator';
-                 equalsElement.textContent = '+';
-                
-                 sequenceElement.appendChild(equalsElement);
-             }
+            if (i === -1) {
+                sequenceElement.appendChild(insertOperator('equals'));
+            } else if (i === -2) {
+                sequenceElement.appendChild(insertOperator('plus'));
+            }
         }
         
         // Update mobile position indicator
@@ -136,69 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateColors();
     }
     
-    // Update colors based on current position
-    function updateColors() {
-        // Special case for position 0 - Use the same dark blue as index 1
-        if (currentPosition === 0) {
-            // Same blue color calculation as used for position 1
-            const blueIntensity = Math.min(5, 200); // 1 * 5 = 5
-            document.body.style.backgroundColor = `rgb(0, ${blueIntensity}, ${blueIntensity + 55})`;
-            document.body.style.color = '#ffffff';
-            document.querySelectorAll('.number').forEach(el => {
-                el.style.color = '#ffffff';
-            });
-            document.querySelectorAll('button').forEach(btn => {
-                btn.style.backgroundColor = 'rgba(0, 100, 212, 0.8)';
-            });
-            // Keep h1 styling consistent
-            document.querySelector('h1').style.color = '#ffffff';
-            document.querySelector('h1').style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            return;
-        }
-        
-        // For positive positions - use blue tones (swapped from negative)
-        if (currentPosition > 0) {
-            const blueIntensity = Math.min(Math.abs(currentPosition) * 5, 200);
-            document.body.style.backgroundColor = `rgb(0, ${blueIntensity}, ${blueIntensity + 55})`;
-            document.body.style.color = '#ffffff';
-            document.querySelectorAll('.number').forEach(el => {
-                el.style.color = '#ffffff';
-            });
-            document.querySelectorAll('button').forEach(btn => {
-                btn.style.backgroundColor = 'rgba(0, 100, 212, 0.8)';
-            });
-            // Keep h1 styling consistent
-            document.querySelector('h1').style.color = '#ffffff';
-            document.querySelector('h1').style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            return;
-        }
-        
-        // Get current fibonacci value for color mapping
-        const currentValue = fibonacci(currentPosition);
-        
-        // Map the fibonacci number to a hue value (0-360)
-        const hue = (currentValue % 360);
-        const saturation = 70;
-        const lightness = 80;
-        
-        // Update background color
-        document.body.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        
-        // Update text colors for contrast
-        // For text, use complementary color with adjusted lightness for readability
-        const textHue = (hue + 180) % 360;
-        const textLightness = 20;
-        
-        document.body.style.color = `hsl(${textHue}, 70%, ${textLightness}%)`;
-        document.querySelectorAll('.number').forEach(el => {
-            el.style.color = `hsl(${textHue}, 70%, ${textLightness}%)`;
-        });
-        
-        // Keep h1 styling consistent
-        document.querySelector('h1').style.color = '#ffffff';
-        document.querySelector('h1').style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        
-
+    // Simplified operator insertion logic
+    function insertOperator(type) {
+        const operatorElement = document.createElement('div');
+        operatorElement.className = 'number operator';
+        operatorElement.insertAdjacentHTML('beforeend', 
+            type === 'equals' ? '<span class="vertical-equal">=</span>' : '+');
+        return operatorElement;
     }
     
     // Functions for scrolling (renamed for vertical scrolling)
