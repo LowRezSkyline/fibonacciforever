@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fibonacci Forever</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wide-warning"> Please Rotate Your Phone</div>
+    <div id="mainContent" class="container">
+        <h1 id="infoButton">Fibonacci Forever</h1>
+        
+
+        <!-- Main content with sequence -->
+        <div class="sequence-container">
+            <div id="sequence" class="sequence"></div>
+        </div>
+        
+        <!-- Right side control panel -->
+        <div class="side-controls">
+            <button id="prev" class="nav-button prev-button">↑</button>
+            <button id="next" class="nav-button next-button">↓</button>
+        </div>
+        
+        <!-- Mobile position indicator and controls (only shown on mobile) -->
+        <div class="mobile-controls">
+            <button style='display: none;' id="mobileReset" onClick="window.location.reload()" class="nav-button reset-button mobile-reset-button">R</button>
+            <div onClick="window.location.reload()" id="mobilePosition" class="mobile-position">Term: 0</div>
+        </div>
+    </div>
+    <!-- Modal -->    
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Fibonacci Forever</h2>
+            </div>
+            <div class="modal-body">
+                <p>HN: evo_9</p>
+                <p>2025</p><br>
+				<p>...lately, I've been having trouble falling asleep<br>
+				To help I run through the fibonacci sequence in my head<br>
+				A sort of coder nerds counting sheep<br>
+				I sometimes reach the end of the sequence before sleeping<br><br>
+				I wrote this to help check my math in the morning...<br>
+				Or sometimes at 3AM.<br>
+				Or both =)<br><br>
+				</p>
+				<p> swipe up / down on mobile</p>
+				<p> use arrows for granular control</p>
+				<p>Touch Term To Reset </P>
+				
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+    html {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    transition: background-color 1s ease;
+    background-color: #8B0000; /* Deep red initial color */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff; /* Initial text color for contrast */
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px 20px 20px; /* Reduced top padding to 10px */
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+h1 {
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 0;
+    border-radius: 20px;
+    margin: 10px auto;
+    width: 200px;
+    cursor: pointer;
+}
+
+h1:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+}
+
+/* Sequence display */
+.sequence-container {
+    overflow: hidden;
+    width: 100%;
+    height: 75vh;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sequence {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+}
+
+/* Bottom right controls */
+.side-controls {
+    position: fixed;
+    right: 20px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 100;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    touch-action: manipulation; /* Prevent double-tap zoom */
+    -webkit-touch-callout: none; /* Prevent callout */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+}
+
+/* Position display and scientific notation toggle */
+.position-info, 
+.sci-notation-toggle {
+    margin-top: 20px;
+    transition: color 1s ease;
+}
+
+#position {
+    font-size: 16px;
+}
+
+.sci-notation-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.sci-notation-toggle input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.sci-notation-toggle label {
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Navigation buttons */
+.nav-button {
+    z-index: 10;
+    font-size: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: rgba(212, 0, 0, 0.8);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+    touch-action: manipulation; /* Prevent double-tap zoom */
+    -webkit-touch-callout: none; /* Prevent callout */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+.reset-button {
+    background-color: rgba(212, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+.reset-button:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+/* Fibonacci numbers styling */
+.number {
+    margin: 8px 0;
+    padding: 5px 0;
+    transition: all 0.5s ease;
+    white-space: nowrap;
+    text-align: center;
+    transition: transform 0.5s ease, font-size 0.5s ease, opacity 0.5s ease, color 1s ease;
+}
+
+.operator {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.center {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+.adjacent {
+    font-size: 3rem;
+}
+
+.further {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.distant {
+    font-size: 1.5rem;
+    opacity: 0.6;
+}
+
+.very-distant {
+    font-size: 1rem;
+    opacity: 0.4;
+}
+
+/* Bottom center controls container - visible on all devices */
+.mobile-controls {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 100;
+    padding: 5px;
+    pointer-events: auto; /* Ensure touch events work */
+}
+
+/* Mobile position indicator */
+.mobile-position, .title-position {
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 0;
+    transition: opacity 0.3s;
+    border-radius: 20px;
+    margin: 10px auto;
+    width: 120px;
+    cursor: pointer;
+}
+
+.title-position {
+    width: 180px; /* Slightly wider for title */
+    z-index: 110; /* Ensure it's above other elements */
+    position: relative; /* Establish z-index context */
+}
+
+/* Mobile reset button - hidden by default on desktop */
+.mobile-reset-button {
+    display: none; /* Hidden on desktop */
+    margin: 0 auto 10px auto;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+    z-index: 101;
+    cursor: pointer;
+    touch-action: manipulation; /* Improve touch interaction */
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .mobile-reset-button {
+        display: block; /* Show reset button on mobile */
+    }
+    
+    /* Adjust side controls for mobile */
+    .side-controls {
+        right: 10px;
+        bottom: 70px; /* Position above the mobile bottom controls */
+        padding: 10px;
+        gap: 10px;
+        transform: scale(0.8); /* Make smaller on mobile */
+    }
+    
+    /* Adjust bottom controls on mobile */
+    .mobile-controls {
+        margin-right: 0; /* Reset margin on mobile */
+    }
+    
+
+
+    h1 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        width: 180px;
+    }
+    
+    .center {
+        font-size: 3.5rem;
+    }
+    
+    .adjacent {
+        font-size: 2.2rem;
+    }
+    
+    .further {
+        font-size: 1.5rem;
+    }
+    
+    /* Adjust modal for mobile */
+    .modal-content {
+        width: 85%;
+        margin: 40% auto;
+        padding: 15px;
+    }
+}
+
+.wide-warning { 
+    font-size: 1.5rem;
+    color: #ffcc00; /* Warning color */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: none;
+
+
+
+}
+
+/* Ensure adequate space for bottom controls on all devices */
+.sequence-container {
+    padding-bottom: 50px;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: white;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.modal-header h2 {
+    margin: 0 0 15px 0;
+    color: white;
+    font-size: 24px;
+}
+
+.modal-body p {
+    margin: 10px 0;
+    color: #ddd;
+    font-size: 16px;
+}
+
+/* Show modal animation */
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+
+.vertical-equal {
+    display: inline-block;
+    transform: rotate(90deg); /* Rotates the element 90 degrees */
+    font-size: 2rem; /* Adjust size as needed */
+  }
+

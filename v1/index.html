@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Forever</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Fibonacci Forever</h1>
+        <table class="main-table" bxorder="1">
+            <tr>
+                <td class="nav-cell left-cell">
+                    <button id="prev" class="nav-button prev-button">←</button>
+                </td>
+                <td class="sequence-cell">
+                    <div class="sequence-container">
+                        <div id="sequence" class="sequence"></div>
+                    </div>
+                </td>
+                <td class="nav-cell right-cell">
+                    <button id="next" class="nav-button next-button">→</button>
+                </td>
+            </tr>
+        </table>
+        <div class="controls">
+            <button id="reset" class="reset-button">Reset</button>
+            <span id="position">Position: 0</span>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
